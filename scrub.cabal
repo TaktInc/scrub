@@ -16,7 +16,7 @@ cabal-version:       >=1.10
 library
   exposed-modules:
     Scrub
-    Scrub.Types
+    Scrub.Wrappers
 
   hs-source-dirs: src
   build-depends:

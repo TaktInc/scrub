@@ -2,7 +2,7 @@
 {-# LANGUAGE DeriveGeneric      #-}
 {-# LANGUAGE OverloadedStrings  #-}
 
-module Scrub.Types where
+module Scrub.Wrappers where
 
 ------------------------------------------------------------------------------
 import           Data.Data
@@ -27,6 +27,7 @@ instance IsString Email where
 
 instance Scrub Email where
   scrub _ = "<email scrubbed>"
+
 
 ------------------------------------------------------------------------------
 -- | Newtype wrapper for Text passwords with an appropriate Scrub instance.
