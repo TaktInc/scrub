@@ -1,0 +1,25 @@
+name:                scrub
+version:             0.1
+synopsis:            Scrubs data types of sensitive information such as PII, passwords, etc
+description:         Provides a type class Scrub that converts a data type to Text and removes
+                     sensitive information in the process.  Useful for error messages, logging, etc.
+license:             BSD3
+license-file:        LICENSE
+author:              Doug Beardsley
+maintainer:          mightybyte@gmail.com
+copyright:           Takt Inc
+category:            Logging, Security
+build-type:          Simple
+extra-source-files:  ChangeLog.md
+cabal-version:       >=1.10
+
+library
+  exposed-modules:
+    Scrub
+    Scrub.Types
+
+  hs-source-dirs: src
+  build-depends:
+    base >= 4.9  && < 4.10,
+    text >= 0.11 && < 1.3
+  default-language:    Haskell2010
