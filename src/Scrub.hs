@@ -1,18 +1,34 @@
-{-# LANGUAGE FlexibleInstances    #-}
-{-# LANGUAGE TypeSynonymInstances #-}
-{-# LANGUAGE OverloadedStrings  #-}
+{-# LANGUAGE DeriveDataTypeable         #-}
+{-# LANGUAGE DeriveGeneric              #-}
+{-# LANGUAGE FlexibleInstances          #-}
+{-# LANGUAGE GeneralizedNewtypeDeriving #-}
+{-# LANGUAGE TypeSynonymInstances       #-}
+{-# LANGUAGE OverloadedStrings          #-}
 
 module Scrub
   ( Scrub(..)
+  , Scrubbed(..)
   ) where
 
 ------------------------------------------------------------------------------
+import           Data.Data
 import           Data.Int
 import           Data.Monoid
 import           Data.Text (Text)
 import qualified Data.Text as T
+import           Data.Typeable
 import           Data.Word
+import           GHC.Generics
 ------------------------------------------------------------------------------
+
+
+------------------------------------------------------------------------------
+-- | Newtype wrapper that scrubs whatever it wraps.
+newtype Scrubbed a = Scrubbed { unScrubbed :: a }
+  deriving (Eq,Ord,Read,Show,Monoid,Typeable,Data,Generic)
+
+instance Scrub (Scrubbed a) where
+  scrub _ = "<scrubbed>"
 
 
 ------------------------------------------------------------------------------
@@ -36,6 +52,7 @@ instance Scrub a => Scrub (Maybe a) where
 instance Scrub a => Scrub [a] where
   scrub [] = "[]"
   scrub as = "[" <> T.intercalate "," (map scrub as) <> "]"
+
 
 ------------------------------------------------------------------------------
 -- Instances that piggy-back off Show
@@ -167,3 +184,4 @@ instance (Scrub a, Scrub b, Scrub c, Scrub d, Scrub e, Scrub f, Scrub g, Scrub h
 
 scrubTuple :: [Text] -> Text
 scrubTuple ts = "(" <> T.intercalate "," ts <> ")"
+
