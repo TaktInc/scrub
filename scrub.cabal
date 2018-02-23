@@ -5,8 +5,8 @@ description:         Provides a type class Scrub that converts a data type to Te
                      sensitive information in the process.  Useful for error messages, logging, etc.
 license:             BSD3
 license-file:        LICENSE
-author:              Doug Beardsley
-maintainer:          mightybyte@gmail.com
+author:              Isaac Shapira, Doug Beardsley
+maintainer:          fresheyeball@gmail.com, mightybyte@gmail.com
 copyright:           Takt Inc
 category:            Logging, Security
 build-type:          Simple
