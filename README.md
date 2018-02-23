@@ -35,5 +35,5 @@ frank = Person "Frank Fuller" 43 "frank.fuller@ymail.com" "Real nice guy from Ar
 
 ```haskell
 > scrub frank
-Scrubbed {unScrubbed = Person {_pName = FullName {unFullName = "<Scrubbed FullName>"}, _pAge = 43, _pEmail = Email {unEmail = "<Scrubbed Email>"}, _pBio = Sensitive {inSensitive = "<Scrubbed Sensitive Text>", _pRole = Admin }}}
+Scrubbed {unScrubbed = Person {_pName = FullName {unFullName = "<Scrubbed FullName>"}, _pAge = 43, _pEmail = Email {unEmail = "<Scrubbed Email>"}, pRole = Admin, _pBio = Sensitive {inSensitive = "<Scrubbed Sensitive Text>"}}}
 ```
