@@ -21,10 +21,13 @@ Tested-With:         GHC == 7.4.2,
 library
   exposed-modules:
     Scrub
-    Scrub.Wrappers
+    Scrub.Class
+    Scrub.Newtypes
 
   hs-source-dirs: src
+  ghc-options:         -Wall
   build-depends:
     base >= 4.9  && < 4.10,
-    text >= 0.11 && < 1.3
+    text >= 0.11 && < 1.3,
+    time
   default-language:    Haskell2010
