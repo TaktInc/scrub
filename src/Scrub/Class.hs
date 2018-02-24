@@ -11,9 +11,15 @@
 {-# LANGUAGE UndecidableInstances       #-}
 
 module Scrub.Class
-  ( Scrub(..)
+  ( -- * The Scrub Class
+    Scrub(..)
   , Scrubbed(..)
-  , scrubS, scrubI
+    -- * Default implementations
+  , scrubS
+  , scrubI
+    -- * Function helpers
+  , contraScrub
+  , preScrub
   ) where
 
 ------------------------------------------------------------------------------
@@ -63,6 +69,20 @@ scrubS x = Scrubbed $ "<Scrubbed " <> fromString (show (typeOf x)) <> ">"
 -- numbers we might wish to preserve.
 scrubI :: Num n => Scrubbed n
 scrubI = Scrubbed (negate 1)
+
+
+-- | This is based on the notion that if we have a pure function
+-- and no PII comes into the input, then no PII can leak in the output.
+-- Therefore the output can be considered `Scrubbed`, even if it has no
+-- `Scrub` instance. Of course this assumption can be violated if you have
+-- hard coded PII somewhere.
+contraScrub :: Scrub a => (a -> b) -> Scrubbed (a -> b)
+contraScrub f = Scrubbed $ f . clean
+
+-- | Same as `contraScrub` with slightly different semantics
+preScrub :: Scrub a => (a -> b) -> a -> Scrubbed b
+preScrub f = Scrubbed . f . clean
+
 
 class GScrub (g :: * -> *) where
   gscrub :: g a -> g a

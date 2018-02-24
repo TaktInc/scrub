@@ -4,9 +4,15 @@
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 {-# LANGUAGE OverloadedStrings          #-}
 
+{-|
+  These are helpers for convenience only. Sometimes you may want to just pull in an `Email` type without having to write it yourself. This module provides @newtype@ wrappers for all the most common forms of PII. You may with to import this module @qualified@. This module also exposes a @newtype@ for tagging data as sensitive without documenting why..
+-}
+
 module Scrub.Newtypes
-  ( -- * Newtypes for common PII
-    FullName(..)
+  ( -- * Wrapper to tag existing types
+    Sensitive(..)
+    -- * Newtypes for common PII
+  , FullName(..)
   , Address(..)
   , Email(..)
   , NationalIdentificationNumber(..)
@@ -19,8 +25,6 @@ module Scrub.Newtypes
   , TelephoneNumber(..)
   , UserName(..)
   , Password(..)
-  -- * Generic wrapper for easy tagging of data
-  , Sensitive(..)
   ) where
 
 ------------------------------------------------------------------------------
@@ -86,6 +90,22 @@ newtype Password = Password { unPassword :: Text }
   deriving (Show,Eq,Ord,Monoid,Typeable,Data,Generic,IsString)
 instance Scrub Password where scrub = scrubS
 
+{- | Handy wrapper for easily tagging common data types as sensitive.
+ For example, we might want to ad hoc make part of a structure scrubbable.
+
+  @
+  userNames :: [Text]
+  scrub (Sensitive \<$\> userNames) :: Scrubbed [Sensitive Text]
+  @
+
+  or
+
+  @
+  data Foo = Foo
+    { userId :: Sensitive Int
+    , ...
+  @
+-}
 newtype Sensitive a = Sensitive { inSensitive :: a }
   deriving (Show,Eq,Ord,Monoid,Typeable,Data,Generic,IsString,Num)
 instance (IsString s, Monoid s, Typeable s) => Scrub (Sensitive s) where scrub = scrubS
