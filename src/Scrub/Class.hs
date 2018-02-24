@@ -34,12 +34,20 @@ import           GHC.Generics
 newtype Scrubbed a = Scrubbed { getScrubbed :: a }
   deriving (Eq,Ord,Read,Show,Monoid,Typeable,Data,Generic)
 
-class Scrub a where
-  {-|
+
+{-|
   Convert some data to a version scrubbed of sensitive information.
   This class comes with support for `Generic``s, such that derivied
   instances automatically scrub sensitive constituent data.
-  -}
+
+  There is one law that `scrub` should hold:
+
+  @
+  scrub . getScrubbed . scrub = scrub
+  @
+
+-}
+class Scrub a where
 
   scrub :: a -> Scrubbed a
   default scrub :: (Generic a, GScrub (Rep a)) => a -> Scrubbed a
