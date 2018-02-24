@@ -64,7 +64,7 @@ instance Scrub DriversLicenseNumber where scrub _ = scrubI
 
 newtype CreditCardNumber = CreditCardNumber { unCreditCardNumber :: [Int] }
   deriving (Show,Eq,Ord,Typeable,Data,Generic)
-instance Scrub CreditCardNumber where scrub = Scrubbed . CreditCardNumber . unScrubbed . scrub . unCreditCardNumber
+instance Scrub CreditCardNumber where scrub = Scrubbed . CreditCardNumber . getScrubbed . scrub . unCreditCardNumber
 
 newtype DigitalIdentity = DigitalIdentity { unDigitalIdentity :: Text }
   deriving (Show,Eq,Ord,Monoid,Typeable,Data,Generic,IsString)

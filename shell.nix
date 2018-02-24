@@ -4,12 +4,13 @@ let
 
   inherit (nixpkgs) pkgs;
 
-  f = { mkDerivation, base, stdenv, text, time }:
+  f = { mkDerivation, base, hspec, stdenv, text, time }:
       mkDerivation {
         pname = "scrub";
         version = "0.1";
         src = ./.;
         libraryHaskellDepends = [ base text time ];
+        testHaskellDepends = [ base hspec text time ];
         description = "Scrubs data types of sensitive information such as PII, passwords, etc";
         license = stdenv.lib.licenses.bsd3;
       };

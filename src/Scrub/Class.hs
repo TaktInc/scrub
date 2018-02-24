@@ -25,7 +25,7 @@ import           GHC.Generics
 
 
 -- | Newtype wrapper that document that a peice of data has been scrubbed.
-newtype Scrubbed a = Scrubbed { unScrubbed :: a }
+newtype Scrubbed a = Scrubbed { getScrubbed :: a }
   deriving (Eq,Ord,Read,Show,Monoid,Typeable,Data,Generic)
 
 class Scrub a where
@@ -41,6 +41,13 @@ class Scrub a where
 
 instance {-# OVERLAPPABLE #-} (Scrub a, Functor f) => Scrub (f a) where
   scrub = Scrubbed . fmap clean
+
+instance (Scrub l, Scrub r) => Scrub (Either l r) where
+  scrub (Left l)  = Scrubbed . Left $ clean l
+  scrub (Right r) = Scrubbed . Right $ clean r
+
+instance (Scrub l, Scrub r) => Scrub (l, r) where
+  scrub (l, r) = Scrubbed (clean l, clean r)
 
 instance {-# OVERLAPPABLE #-} Scrub a where
   scrub = Scrubbed
@@ -77,4 +84,4 @@ instance (GScrub f, GScrub g) => GScrub (f :*: g) where
   gscrub (l :*: r) = gscrub l :*: gscrub r
 
 clean :: Scrub a => a -> a
-clean = unScrubbed . scrub
+clean = getScrubbed . scrub
