@@ -11,6 +11,7 @@ import           Data.Typeable
 import           GHC.Generics
 
 import           Test.Hspec
+import           Data.Semigroup (Semigroup)
 
 
 -- Nested Generics
@@ -30,7 +31,7 @@ nestedGenerics =  it "subdata should get filled when derived from generics" $
 
 -- Stringy Newtypes
 
-newtype DangerZone = DangerZone String deriving (Show, Eq, Typeable, Monoid, IsString)
+newtype DangerZone = DangerZone String deriving (Show, Eq, Typeable, Semigroup, Monoid, IsString)
 instance Scrub DangerZone where scrub = scrubS
 stringIsh :: Spec
 stringIsh = it "should include type information when using scrubS" $

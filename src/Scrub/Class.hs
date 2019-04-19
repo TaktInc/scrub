@@ -25,6 +25,7 @@ module Scrub.Class
 ------------------------------------------------------------------------------
 import           Data.Data
 import           Data.Monoid
+import           Data.Semigroup (Semigroup)
 import           Data.String
 import           GHC.Generics
 ------------------------------------------------------------------------------
@@ -32,7 +33,7 @@ import           GHC.Generics
 
 -- | Newtype wrapper that document that a peice of data has been scrubbed.
 newtype Scrubbed a = Scrubbed { getScrubbed :: a }
-  deriving (Eq,Ord,Read,Show,Monoid,Typeable,Data,Generic)
+  deriving (Eq,Ord,Read,Show,Semigroup,Monoid,Typeable,Data,Generic)
 
 
 {-|
